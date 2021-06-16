@@ -9,11 +9,10 @@ describe("transform", function() {
     });
 
     it("transform away!", function() {
-        const from = [100, 100];
-        const to = [200, 200];
+        const to = [200, -100];
         const results: [boolean, number[]][] = [];
 
-        transform(from, to, 1000, false, function(curr: number[], finished: boolean) {
+        transform(to, 1000, function(curr: number[], finished: boolean) {
             results.push([finished, curr]);
         });
 
@@ -24,9 +23,9 @@ describe("transform", function() {
         jest.runOnlyPendingTimers();
 
         expect(results).toEqual([
-            [false, from],
-            [false, [150, 150]],
-            [true, to],
+            [false, [0, -0]],
+            [false, [100, -50]],
+            [true, [100, -50]],
         ]);
     });
 });

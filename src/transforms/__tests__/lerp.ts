@@ -7,11 +7,10 @@ describe("lerp", function() {
     it("should lerp", async function() {
         nowSpy.mockImplementation(() => 0);
 
-        const from = [0, 1, 2];
-        const to = [1, 0, 2];
+        const to = [1, -1, 0];
         const results: number[][] = [];
 
-        lerp(from, to, 1000, function(diff: number[]) {
+        lerp(to, 1000, function(diff: number[]) {
             results.push(diff);
         });
 
@@ -22,9 +21,9 @@ describe("lerp", function() {
         jest.runOnlyPendingTimers();
 
         expect(results).toEqual([
-            from,
-            [0.5, 0.5, 2],
-            to,
+            [0,     -0, 0],
+            [0.5, -0.5, 0],
+            [0.5, -0.5, 0],
         ]);
     });
 });

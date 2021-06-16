@@ -8,7 +8,10 @@ div.style.width = "50px";
 div.style.height = "50px";
 
 const el = new Transformer(new HoffElementImpl(div));
-el.translate(100, 0, 1000)
+el.translate(100, 0, 2000)
+setTimeout(function() {
+    el.translate(100, 0, 2000)
+}, 1000);
 
 // @ts-ignore
 window.MyElement = el;

@@ -3,59 +3,52 @@ import { HoffElement } from "../HoffElement";
 import * as Matrix from "../matrix";
 import render from "./renderer";
 
-export default class Transformer implements Renderer {
-    private width: number;
-    private height: number;
+let _id = 0;
 
+export default class Transformer implements Renderer {
     // TODO: do we need centerpoint?
 
-    constructor(private el: HoffElement) {
-        const bounds = el.getStats();
-        this.width = bounds.width;
-        this.height = bounds.height;
-    }
+    constructor(private el: HoffElement) { }
 
     render(): void {
         this.el.render();
     }
 
-    translate(x: number, y: number, t: number, relative: boolean = false): void {
-        const {
-            x: fromX,
-            y: fromY,
-        } = this.el.getStats();
+    setPosition(x: number, y: number): void {
+        Matrix.createTranslateMatrix(x, y, 1, this.el.translate);
+        render(this);
+    }
 
-        transform([fromX, fromY], [x, y], t, relative, ([currX, currY]: number[]) => {
-            Matrix.createTranslateMatrix(currX, currY, 1, this.el.translate);
+    // TODO: Deal with abs translations
+    // TODO: Generating lots of garbage with getStats().
+    translate(x: number, y: number, t: number): void {
+        transform([x, y], t, ([currX, currY]: number[]) => {
+            Matrix.addTranslation(currX, currY, 1, this.el.translate);
             render(this);
         });
     }
 
     // TODO: Future prime.  You should think about making this nicer... maybe..
-    rotate(opts: RotateOption, t: number, relative: boolean = false): void {
-        const {
-            rotX,
-            rotY,
-            rotZ,
-        } = this.el.getStats();
+    // TODO: FUture prime. think about absolute rotations..
+    rotate(opts: RotateOption, t: number): void {
 
         if (opts.x) {
-            transform([rotX], [opts.x], t, relative, ([x]) => {
-                this.el.setRotX(x);
+            transform([opts.x], t, ([x]) => {
+                this.el.setRotX(this.el.getStats().rotX + x);
                 render(this);
             });
         }
 
         if (opts.y) {
-            transform([rotY], [opts.y], t, relative, ([y]) => {
-                this.el.setRotY(y);
+            transform([opts.y], t, ([y]) => {
+                this.el.setRotY(this.el.getStats().rotY + y);
                 render(this);
             });
         }
 
         if (opts.z) {
-            transform([rotZ], [opts.z], t, relative, ([z]) => {
-                this.el.setRotZ(z);
+            transform([opts.z], t, ([z]) => {
+                this.el.setRotZ(this.el.getStats().rotZ + z);
                 render(this);
             });
         }

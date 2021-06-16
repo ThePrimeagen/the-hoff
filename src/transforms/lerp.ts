@@ -4,12 +4,19 @@ type Callback = (currentLerp: number[], finished: boolean) => void;
 
 // TODO: Make it so that we can apply many of the transforms at the same time...
 export default function lerpMeDaddy(
-    from: number[], to: number[], time: number, cb: Callback): Stop {
+    diff: number[], time: number, cb: Callback): Stop {
 
-    const diff = to.map((x: number, i: number) => x - from[i]);
-
+    const last = new Array(diff.length).fill(0);
     const stop = createTimer(time, function(pd: number, finished: boolean) {
-        const currentDiff = diff.map((x: number, i: number) => from[i] + x * pd);
+
+        // This seems gross.  Doing a mutation within a map fn
+        const currentDiff = diff.map((x: number, i: number) => {
+            const delta = x * pd - last[i];
+
+            last[i] += delta;
+            return delta;
+        });
+
         cb(currentDiff, finished);
     });
 

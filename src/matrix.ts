@@ -54,6 +54,15 @@ export function createScaleMatrix(
     return matrix;
 }
 
+export function addTranslation(x: number, y: number, z: number, matrix: Matrix): Matrix {
+
+    matrix[3][0] += x;
+    matrix[3][1] += y;
+    matrix[3][2] += z;
+
+    return matrix;
+}
+
 export function createTranslateMatrix(x: number, y: number, z: number = 1, matrix = createIdentity()): Matrix {
 
     matrix[3][0] = x;
