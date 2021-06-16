@@ -72,12 +72,22 @@ export function createTranslateMatrix(x: number, y: number, z: number = 1, matri
     return matrix;
 }
 
+export function addRotateX(radians: number, matrix: Matrix): Matrix {
+    matrix[0][0] += Math.cos(radians);
+    matrix[0][1] += Math.sin(radians);
+    matrix[1][0] += -Math.sin(radians);
+    matrix[1][1] += Math.cos(radians);
+
+    return matrix;
+}
+
 export function createRotXMatrix(radians: number, matrix = createIdentity()): Matrix {
 
-    matrix[0][0] = Math.cos(radians);
-    matrix[0][1] = Math.sin(radians);
-    matrix[1][0] = -Math.sin(radians);
+    matrix[0][0] = 1;
     matrix[1][1] = Math.cos(radians);
+    matrix[1][2] = -Math.sin(radians);
+    matrix[2][1] = Math.sin(radians);
+    matrix[2][2] = Math.cos(radians);
 
     return matrix;
 
@@ -85,24 +95,20 @@ export function createRotXMatrix(radians: number, matrix = createIdentity()): Ma
 
 export function createRotYMatrix(radians: number, matrix = createIdentity()): Matrix {
 
-    matrix[0][0] = -Math.sin(radians);
-    matrix[0][1] = Math.cos(radians);
-    matrix[1][2] = 1;
-    matrix[1][1] = 0;
-    matrix[2][0] = Math.cos(radians);
-    matrix[2][1] = Math.sin(radians);
+    matrix[0][0] = Math.cos(radians);
+    matrix[0][1] = Math.sin(radians);
+    matrix[2][0] = -Math.sin(radians);
+    matrix[2][1] = Math.cos(radians);
 
     return matrix;
 }
 
 export function createRotZMatrix(radians: number, matrix = createIdentity()): Matrix {
 
-    matrix[0][2] = 1;
-    matrix[0][0] = 0;
-    matrix[1][0] = Math.cos(radians);
-    matrix[1][1] = Math.sin(radians);
-    matrix[2][0] = -Math.sin(radians);
-    matrix[2][1] = Math.cos(radians);
+    matrix[0][0] = Math.cos(radians);
+    matrix[0][1] = -Math.sin(radians);
+    matrix[1][0] = Math.sin(radians);
+    matrix[1][1] = Math.cos(radians);
 
     return matrix;
 }
