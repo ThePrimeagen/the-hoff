@@ -10,7 +10,6 @@ function createEmpty(): Matrix {
     ];
 }
 
-
 export function createIdentity(): Matrix {
     return [
         [1, 0, 0, 0],

@@ -4,13 +4,11 @@ import Transformer from './transforms';
 
 const div = document.createElement("div");
 div.style.backgroundColor = "#000";
-div.style.width = "100px";
-div.style.height = "100px";
+div.style.width = "50px";
+div.style.height = "50px";
 
 const el = new Transformer(new HoffElementImpl(div));
-el.translate(500, 500, 3000).then(function() {
-    console.log("I TRANSLATED!!");
-});
+el.translate(100, 0, 1000)
 
 // @ts-ignore
 window.MyElement = el;

@@ -1,7 +1,6 @@
 import transform from "./transform";
 import { HoffElement } from "../HoffElement";
 import * as Matrix from "../matrix";
-import lerpMeDaddy from "./lerp";
 import render from "./renderer";
 
 export default class Transformer implements Renderer {
@@ -31,7 +30,38 @@ export default class Transformer implements Renderer {
             render(this);
         });
     }
+
+    // TODO: Future prime.  You should think about making this nicer... maybe..
+    rotate(opts: RotateOption, t: number, relative: boolean = false): void {
+        const {
+            rotX,
+            rotY,
+            rotZ,
+        } = this.el.getStats();
+
+        if (opts.x) {
+            transform([rotX], [opts.x], t, relative, ([x]) => {
+                this.el.setRotX(x);
+                render(this);
+            });
+        }
+
+        if (opts.y) {
+            transform([rotY], [opts.y], t, relative, ([y]) => {
+                this.el.setRotY(y);
+                render(this);
+            });
+        }
+
+        if (opts.z) {
+            transform([rotZ], [opts.z], t, relative, ([z]) => {
+                this.el.setRotZ(z);
+                render(this);
+            });
+        }
+    }
 }
+
 
 
 
