@@ -1,7 +1,10 @@
+import transform from "./transform";
 import { HoffElement } from "../HoffElement";
-import createTimer from "./timer";
+import * as Matrix from "../matrix";
+import lerpMeDaddy from "./lerp";
+import render from "./renderer";
 
-class Transformer {
+export default class Transformer implements Renderer {
     private width: number;
     private height: number;
 
@@ -13,28 +16,23 @@ class Transformer {
         this.height = bounds.height;
     }
 
-    scale(x: number, y: number, t: number, relative: boolean = false): Promise<void> {
-    };
+    render(): void {
+        this.el.render();
+    }
 
-    translate(x: number, y: number, t: number, relative: boolean = false): Promise<void> {
-        return new Promise((res, rej) => {
-            const {
-                x: startX,
-                y: startY,
-            } = this.getStats();
+    translate(x: number, y: number, t: number, relative: boolean = false): void {
+        const {
+            x: fromX,
+            y: fromY,
+        } = this.el.getStats();
 
-            const diffX = relative ? x : startX - x;
-            const diffY = relative ? y : startY - y;
-
-            const timer = createTimer(t, (percent: number) => {
-                const pX = percent * diffX;
-                const pY = percent * diffY;
-            });
+        transform([fromX, fromY], [x, y], t, relative, ([currX, currY]: number[]) => {
+            Matrix.createTranslateMatrix(currX, currY, 1, this.el.translate);
+            render(this);
         });
     }
-
-    private getStats(): DOMRect {
-        return this.el.getBoundingClientRect();
-    }
 }
+
+
+
 

@@ -8,8 +8,16 @@ export type HoffElementStats = {
 }
 
 export interface HoffElement {
+    scale: Matrix;
+    translate: Matrix;
+    rotateX: Matrix;
+    rotateY: Matrix;
+    rotateZ: Matrix;
+    opacity: number;
+
     getStats(): HoffElementStats;
     render(): void;
+
 }
 
 const identity = createIdentity();
@@ -38,6 +46,7 @@ export class HoffElementImpl implements HoffElement {
     }
 
     render(): void { // todo
+        console.log("El#Render", this.translate[3]);
         let matrix = multiply(
             identity, this.scale, this.rotateX,
             this.rotateY, this.rotateZ, this.translate);

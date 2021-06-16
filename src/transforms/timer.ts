@@ -1,5 +1,6 @@
-export type Callback = (percentDone: number) => void;
-export type Stop = () => void;
+import raf from "../utils/raf";
+
+export type Callback = (percentDone: number, finished: boolean) => void;
 
 export default function createTimer(time: number, cb: Callback): Stop {
     const start = Date.now();
@@ -7,16 +8,16 @@ export default function createTimer(time: number, cb: Callback): Stop {
 
     function run() {
         const diff = Date.now() - start;
-        if (diff > time || stop) {
-            cb(1);
+        if (diff >= time || stop) {
+            cb(1, true);
             return;
         }
 
-        cb(diff / start);
-        requestAnimationFrame(run);
+        cb(diff / time, false);
+        raf(run);
     }
 
-    requestAnimationFrame(run);
+    raf(run);
     return function() {
         stop = true;
     };
