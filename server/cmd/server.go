@@ -1,15 +1,10 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
-	"strings"
-
-	"github.com/minio/minio-go"
-	"github.com/minio/minio-go/pkg/credentials"
 )
 
 func main() {
