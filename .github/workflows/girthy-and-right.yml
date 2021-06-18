@@ -1,5 +1,8 @@
 name: remote ssh command
-on: [push]
+on:
+    push:
+        branches:
+            - main
 jobs:
 
   build:
@@ -13,4 +16,4 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
-        script: cd the-hoff && git pull origin master && cd server && ./server/deploy
+        script: cd the-hoff && git pull origin master && cd server && ./deploy
