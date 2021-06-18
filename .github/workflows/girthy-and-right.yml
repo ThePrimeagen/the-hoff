@@ -1,8 +1,8 @@
 name: remote ssh command
 on:
-    push:
-        branches:
-            - main
+  push:
+    branches:
+      - main
 jobs:
 
   build:
