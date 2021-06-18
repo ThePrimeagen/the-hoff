@@ -1,9 +1,9 @@
 import lerpMeDaddy from "./lerp";
 
 export default function transform(diff: number[], t: number,
-                                  transform: (values: number[], finished: boolean) => boolean | void): void {
+                                  transform: (values: number[], finished: boolean) => boolean | void): Stop {
 
-    const stop = lerpMeDaddy(diff, t, (curr: number[], finished: boolean) => {
+    return lerpMeDaddy(diff, t, (curr: number[], finished: boolean) => {
         if (transform(curr, finished) === false) {
             stop();
         }

@@ -3,10 +3,9 @@ import { HoffElement } from "../HoffElement";
 import * as Matrix from "../matrix";
 import render from "./renderer";
 
-let _id = 0;
-
 export default class Transformer implements Renderer {
     // TODO: do we need centerpoint?
+    private scaleTransform?: () => void;
 
     constructor(private el: HoffElement) { }
 
@@ -17,6 +16,28 @@ export default class Transformer implements Renderer {
     setPosition(x: number, y: number): void {
         Matrix.createTranslateMatrix(x, y, 1, this.el.translate);
         render(this);
+    }
+
+    scale(x: number, y: number, t: number): void {
+        if (this.scaleTransform) {
+            this.scaleTransform();
+        }
+
+        const {
+            x: scaleX,
+            y: scaleY,
+        } = this.el.getScale();
+
+        const to = [x - scaleX, y - scaleY];
+        this.scaleTransform = transform(to, t, ([deltaX, deltaY]: number[], finished: boolean) => {
+
+            Matrix.addScales(deltaX, deltaY, 1, this.el.scale);
+            render(this);
+
+            if (finished) {
+                this.scaleTransform = undefined;
+            }
+        });
     }
 
     // TODO: Deal with abs translations

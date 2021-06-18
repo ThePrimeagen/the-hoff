@@ -1,16 +1,22 @@
-const toRender = new Set<Renderer>();
+let toRender = new Set<Renderer | EmptyCallback>();
 let currentAnimationFrame: number = -1;
 
 function _render() {
-    for (const renderer of toRender) {
-        renderer.render();
+    const _toRender = toRender;
+    toRender = new Set<Renderer | EmptyCallback>();
+
+    for (const renderer of _toRender) {
+        if (typeof renderer === "function") {
+            renderer();
+        } else {
+            renderer.render();
+        }
     }
 
-    toRender.clear();
     currentAnimationFrame = -1;
 }
 
-export default function render(renderer: Renderer) {
+export default function render(renderer: Renderer | EmptyCallback) {
     toRender.add(renderer);
 
     if (currentAnimationFrame === -1) {

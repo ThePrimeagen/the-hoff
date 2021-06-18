@@ -1,19 +1,25 @@
 {
-  "version": "0.0.0",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "serve": "vite preview",
-    "test": "jest"
-  },
-  "devDependencies": {
-    "@types/jest": "^26.0.23",
-    "typescript": "^4.2.3",
-    "vite": "^2.3.6"
-  },
-  "dependencies": {
-    "jest": "^27.0.4",
-    "jest-environment-node": "^27.0.3",
-    "ts-jest": "^27.0.3"
-  }
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "serve": "vite preview",
+        "test": "jest"
+    },
+    "devDependencies": {
+        "@types/jest": "^26.0.23",
+        "typescript": "^4.2.3",
+        "vite": "^2.3.6",
+        "@sveltejs/vite-plugin-svelte": "^1.0.0-next.11",
+        "@tsconfig/svelte": "^2.0.1",
+        "svelte": "^3.37.0",
+        "svelte-check": "^2.1.0",
+        "svelte-preprocess": "^4.7.2"
+    },
+    "dependencies": {
+        "jest": "^27.0.4",
+        "jest-environment-node": "^27.0.3",
+        "ts-jest": "^27.0.3"
+    }
 }
