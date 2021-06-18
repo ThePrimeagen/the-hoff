@@ -49,6 +49,13 @@ export default class Transformer implements Renderer {
         });
     }
 
+    opacity(opacity: number, t: number): void {
+        transform([opacity - this.el.opacity], t, ([o]) => {
+            this.el.opacity += o;
+            render(this);
+        });
+    }
+
     // TODO: Future prime.  You should think about making this nicer... maybe..
     // TODO: FUture prime. think about absolute rotations..
     rotate(opts: RotateOption, t: number): void {

@@ -20,6 +20,7 @@ export interface HoffElement {
     rotateY: Matrix;
     rotateZ: Matrix;
     opacity: number;
+    element: HTMLElement;
     getStats(): HoffElementStats;
     getScale(): Scale;
     render(): void;
@@ -42,7 +43,7 @@ export class HoffElementImpl implements HoffElement {
     private rotY: number;
     private rotZ: number;
 
-    constructor(private el: HTMLElement) {
+    constructor(public element: HTMLElement) {
         // TODO: If I start doing inplace transforms, then we need to stop doing
         // this...
         this.scale = createIdentity();
@@ -82,7 +83,7 @@ export class HoffElementImpl implements HoffElement {
     }
 
     getStats(): HoffElementStats {
-        const stats = this.el.getBoundingClientRect() as any as HoffElementStats;
+        const stats = this.element.getBoundingClientRect() as any as HoffElementStats;
 
         stats.rotX = this.rotX;
         stats.rotY = this.rotY;
@@ -113,6 +114,7 @@ export class HoffElementImpl implements HoffElement {
             identity, this.translate, this.rotateZ,
             this.rotateY, this.rotateX, this.scale);
 
-        this.el.style.transform = matrixToString(matrix);
+        this.element.style.transform = matrixToString(matrix);
+        this.element.style.opacity = String(this.opacity);
     }
 }
