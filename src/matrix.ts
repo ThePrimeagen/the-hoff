@@ -43,6 +43,22 @@ function _multiply(a: Matrix, b: Matrix, out: Matrix = createEmpty()): Matrix {
     return out;
 }
 
+export function addScales(x: number, y: number, z: number, matrix: Matrix): Matrix {
+    matrix[0][0] += x;
+    matrix[1][1] += y;
+    matrix[2][2] += z;
+
+    return matrix;
+}
+
+export function getScaleValues(matrix: Matrix): [number, number, number] {
+    return [
+        matrix[0][0],
+        matrix[1][1],
+        matrix[2][2],
+    ];
+}
+
 export function createScaleMatrix(
     x: number, y: number, z: number, matrix = createEmpty()): Matrix {
 

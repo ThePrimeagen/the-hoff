@@ -1,4 +1,4 @@
-import raf from "../utils/raf";
+import render from "./renderer";
 
 export type Callback = (percentDone: number, finished: boolean) => void;
 
@@ -7,17 +7,21 @@ export default function createTimer(time: number, cb: Callback): Stop {
     let stop = false;
 
     function run() {
+        if (stop) {
+            return;
+        }
+
         const diff = Date.now() - start;
-        if (diff >= time || stop) {
+        if (diff >= time) {
             cb(1, true);
             return;
         }
 
         cb(diff / time, false);
-        raf(run);
+        render(run);
     }
 
-    raf(run);
+    render(run);
     return function() {
         stop = true;
     };

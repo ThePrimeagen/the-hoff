@@ -1,4 +1,4 @@
-import { matrixToString, createIdentity, Matrix, multiply, createRotXMatrix, createRotYMatrix, createRotZMatrix } from "./matrix";
+import { matrixToString, createIdentity, Matrix, multiply, createRotXMatrix, createRotYMatrix, createRotZMatrix, getScaleValues } from "./matrix";
 
 export type HoffElementStats = {
     width: number;
@@ -8,6 +8,9 @@ export type HoffElementStats = {
     rotX: number;
     rotY: number;
     rotZ: number;
+    scaleX: number;
+    scaleY: number;
+    scaleZ: number;
 }
 
 export interface HoffElement {
@@ -18,6 +21,7 @@ export interface HoffElement {
     rotateZ: Matrix;
     opacity: number;
     getStats(): HoffElementStats;
+    getScale(): Scale;
     render(): void;
     setRotX(x: number): void;
     setRotY(x: number): void;
@@ -65,6 +69,18 @@ export class HoffElementImpl implements HoffElement {
         createRotZMatrix(z, this.rotateZ);
     }
 
+    getScale(): Scale {
+        const [
+            scaleX,
+            scaleY,
+        ] = getScaleValues(this.scale);
+
+        return {
+            x: scaleX,
+            y: scaleY
+        };
+    }
+
     getStats(): HoffElementStats {
         const stats = this.el.getBoundingClientRect() as any as HoffElementStats;
 
@@ -72,11 +88,20 @@ export class HoffElementImpl implements HoffElement {
         stats.rotY = this.rotY;
         stats.rotZ = this.rotZ;
 
+        const [
+            scaleX,
+            scaleY,
+            scaleZ,
+        ] = getScaleValues(this.scale);
+
+        stats.scaleX = scaleX;
+        stats.scaleY = scaleY;
+        stats.scaleZ = scaleZ;
+
         return stats;
     }
 
     render(): void { // todo
-        console.log("El#Render", this.translate[3]);
         // this should be the ordering..
         /*
         let matrix = multiply(
