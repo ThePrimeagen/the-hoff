@@ -13,4 +13,4 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
-        script: cd the-hoff && git pull origin master && ./deploy
+        script: cd the-hoff && git pull origin master && cd server && ./server/deploy
