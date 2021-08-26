@@ -15,3 +15,18 @@ declare type Scale = {
     x: number;
     y: number;
 }
+
+type Animation = {
+    type: number;
+    duration: number
+}
+
+type ScaleAnimation = Animation | {
+    type: 1;
+    x: number;
+    y: number;
+}
+
+
+
+
