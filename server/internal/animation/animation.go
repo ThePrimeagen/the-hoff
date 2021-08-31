@@ -42,17 +42,6 @@ const (
 	ObjectTypeImage
 )
 
-// duration is the time in milliseconds
-// also needs json serialization
-/*
-type Animation interface {
-	Type() AnimationType
-	Duration() int
-	InterpolationType() InterpolationType
-	Offset() int
-}
-*/
-
 type Animation struct {
 	Type              AnimationType     `json:"type"`
 	InterpolationType InterpolationType `json:"interpolationType"`
@@ -95,6 +84,20 @@ type AnimationSet struct {
 	Id         *int          `json:"id"`
 	Type       ObjectType    `json:"type"`
 	Animations []interface{} `json:"animations"`
+}
+
+// create TranslationAnimation from x and y
+func NewTranslateAnimation(x float64, y float64, duration, offset int) TranslateAnimation {
+	return TranslateAnimation{
+		Animation: Animation{
+			Type:              AnimationTypeTranslate,
+			InterpolationType: InterpolationTypeLinear,
+			Offset:            offset,
+			Duration:          duration,
+		},
+		X: x,
+		Y: y,
+	}
 }
 
 // takes in a json string and marshals it into an AnimationSet
@@ -147,11 +150,12 @@ func ParseAnimationSet(jsonStr string) (AnimationSet, error) {
 
 // Convert an TranslateAnimation to a 4x4 homogeneous matrix
 func (t TranslateAnimation) ToMatrix() matrix.Matrix {
+	// return matrix with the translation values
 	return matrix.Matrix{
-		{1, 0, 0, t.X},
-		{0, 1, 0, t.Y},
-		{1, 0, 1, 0},
-		{0, 0, 0, 1},
+		{1, 0, 0, 0},
+		{0, 1, 0, 0},
+		{0, 0, 1, 0},
+		{t.X, t.Y, 0, 1},
 	}
 }
 
@@ -198,10 +202,11 @@ func (s ScaleAnimation) ToMatrix() matrix.Matrix {
 	}
 }
 
+// json marshal as well
 type PlayAnimationMatrix struct {
-	Matrix            matrix.Matrix
-	Duration          int
-	InterpolationType InterpolationType
+	Matrix            matrix.Matrix     `json:"matrix"`
+	Duration          int               `json:"duration"`
+	InterpolationType InterpolationType `json:"interpolationType"`
 }
 
 // [0] = duration
@@ -209,17 +214,17 @@ type PlayAnimationMatrix struct {
 // [2] = toValue (string | int)
 // [3] = fromValue (string | int)
 type PlayOpacityAnimation struct {
-	Duration          int
-	InterpolationType InterpolationType
-	ToValue           float64
-	FromValue         *float64
+	Duration          int               `json:"duration"`
+	InterpolationType InterpolationType `json:"interpolationType"`
+	ToValue           float64           `json:"toValue"`
+	FromValue         *float64          `json:"fromValue"`
 }
 
 type PlayColorAnimation struct {
-	Duration          int
-	InterpolationType InterpolationType
-	ToValue           string
-	FromValue         *string
+	Duration          int               `json:"duration"`
+	InterpolationType InterpolationType `json:"interpolationType"`
+	ToValue           string            `json:"toValue"`
+	FromValue         *string           `json:"fromValue"`
 }
 
 // create a map of transforms with their corresponding animation matrix and duration and interpolation type
